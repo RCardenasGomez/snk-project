@@ -37,7 +37,7 @@ jobs:
 
     # Step to build Docker image
     - name: Build Docker image
-      run: docker build -t yourusername/yourimage:tag .
+      run: docker build -t rocar18/yourimage:tag .
 
     # Step to push Docker image to Docker Hub
     - name: Push Docker image to Docker Hub
@@ -55,7 +55,7 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        image: yourusername/yourimage:tag
+        image: rocar18/yourimage:tag
         args: --file=Dockerfile
 
     # Step to upload result to GitHub Code Scanning
