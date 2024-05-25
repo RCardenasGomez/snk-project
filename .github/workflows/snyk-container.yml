@@ -53,9 +53,11 @@ jobs:
       run: |
         sed -i 's/"security-severity":null/"security-severity":0/g' snyk.sarif
         sed -i 's/"security-severity":"undefined"/"security-severity":0/g' snyk.sarif
+        # Ensuring any other instances are also handled
+        sed -i 's/"security-severity": null/"security-severity": 0/g' snyk.sarif
+        sed -i 's/"security-severity": "undefined"/"security-severity": 0/g' snyk.sarif
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: snyk.sarif
-
 
