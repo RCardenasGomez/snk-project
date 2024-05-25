@@ -55,7 +55,7 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        image: rocar18/yourimage:tag
+        image: rocar18/prueba:tag
         args: --file=Dockerfile
 
     # Step to upload result to GitHub Code Scanning
