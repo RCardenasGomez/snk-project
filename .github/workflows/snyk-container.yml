@@ -26,6 +26,10 @@ jobs:
         run: |
           npm install -g snyk
 
+      # Step to verify Snyk installation
+      - name: Verify Snyk installation
+        run: snyk --version
+
       # Step to build Docker image
       - name: Build Docker image
         run: docker build -t rocar18/prueba3:tag .
@@ -36,7 +40,11 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
           # Run Snyk scan and output SARIF to a file
-          snyk test --docker rocar18/prueba3:tag --file=Dockerfile --sarif=snyk.sarif
+          snyk test --docker rocar18/prueba3:tag --file=Dockerfile --sarif-file=snyk.sarif
+
+      # Step to replace security-severity undefined for license-related findings
+      - name: Replace security-severity undefined for license-related findings
+        run: sed -i 's/"security-severity":"undefined"/"security-severity":"0"/g' snyk.sarif
 
       # Step to push Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
@@ -52,3 +60,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: snyk.sarif
+
