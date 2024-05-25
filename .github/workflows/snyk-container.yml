@@ -21,9 +21,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # Step to install Snyk
+      - name: Install Snyk
+        run: |
+          npm install -g snyk
+
       # Step to build Docker image
       - name: Build Docker image
-        run: docker build -t rocar18/prueba2:tag .
+        run: docker build -t rocar18/prueba3:tag .
 
       # Step to run Snyk to check Docker image for vulnerabilities
       - name: Run Snyk to check Docker image for vulnerabilities and generate SARIF
@@ -31,7 +36,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
           # Run Snyk scan and output SARIF to a file
-          snyk test --docker rocar18/prueba2:tag --file=Dockerfile --sarif=snyk.sarif
+          snyk test --docker rocar18/prueba3:tag --file=Dockerfile --sarif=snyk.sarif
 
       # Step to push Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
@@ -40,11 +45,10 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker push rocar18/prueba2:tag
+          docker push rocar18/prueba3:tag
 
       # Step to upload result to GitHub Code Scanning
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: snyk.sarif
-
